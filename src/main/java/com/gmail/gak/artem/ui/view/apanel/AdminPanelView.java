@@ -25,7 +25,6 @@ public class AdminPanelView extends VerticalLayout implements RouterLayout {
         List<PageData> pages = new ArrayList<>();
 
         pages.add(new PageData(PATH_USER, ICON_USER, TITLE_USER));
-        pages.add(new PageData(PATH_ROLE, ICON_ROLE, TITLE_ROLE));
 
         navigationBar.init(pages, PATH_ADMIN_PANEL);
 

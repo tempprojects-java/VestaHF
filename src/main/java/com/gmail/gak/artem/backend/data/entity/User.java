@@ -20,29 +20,21 @@ public class User extends AbstractEntity {
     @Column(nullable = false)
     private boolean active = true;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-            })
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE
+    })
     @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", unique = true)
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
 
-    public User() {
-    }
-
     public void addRole(Role role) {
         roles.add(role);
-        role.getUsers().add(this);
     }
 
     public void removeRole(Role role) {
         roles.remove(role);
-        role.getUsers().remove(this);
     }
 
     public String getEmail() {

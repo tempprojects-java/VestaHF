@@ -32,11 +32,11 @@ public class LoginView extends VerticalLayout {
         this.authenticationProvider = authenticationProvider;
 
         TextField email = new TextField("E-mail");
-        email.setValue("test@mail.com");
+        email.setValue("admin@mail.com");
         email.setPlaceholder("example@mail.com");
 
         PasswordField password = new PasswordField("Password");
-        password.setValue("123");
+        password.setValue("qwerty");
         password.setPlaceholder("password");
 
         Button sendBtn = new Button("Sign In");
