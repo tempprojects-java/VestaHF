@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="toolbar-layout">
+    <template>
+        <style>
+            :host {
+                display: grid;
+            }
+            #left {
+                text-align: left;
+                grid-column-start: 1;
+                grid-column-end: 1;
+            }
+            #right {
+                text-align: right;
+                grid-column-start: 2;
+                grid-column-end: 2;
+            }
+            #left > *, #right > * {
+                margin-right: 0.5em;
+            }
+
+            @media screen and (max-width: 999px) {
+                #left, #right {
+                    text-align: left;
+                    grid-column-start: 1;
+                    grid-column-end: 2;
+                }
+                #left > *, #right > * {
+                    margin-right: 0.5em;
+                    margin-left: 0;
+                }
+                #right {
+                    margin-top: 0.5em;
+                }
+            }
+            @media screen and (max-width: 480px) {
+                #left > vaadin-combo-box,
+                #right > vaadin-combo-box,
+                #left > search-field,
+                #right > search-field {
+                    margin: 0;
+                    width: 100%;
+                }
+            }
+        </style>
+
+        <div id="left"></div>
+        <div id="right"></div>
+    </template>
+
+    <script>
+        class ToolbarLayout extends Polymer.Element {
+            static get is() {
+                return 'toolbar-layout'
+            }
+        }
+        customElements.define(ToolbarLayout.is, ToolbarLayout);
+    </script>
+</dom-module>

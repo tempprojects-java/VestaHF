@@ -21,9 +21,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Page<User> findByUsernameLikeIgnoreCaseAndRoles(String nameFilter, Role role, Pageable pageable);
 
-    int countByRoles(Role role);
+    int countByRolesIn(List<Role> roles);
 
     int countByUsernameLikeIgnoreCase(String nameFilter);
 
-    int countByUsernameLikeIgnoreCaseAndRoles(String nameFilter, Role role);
+    int countByUsernameLikeIgnoreCaseAndRolesIn(String nameFilter, List<Role> roles);
+
+    Page<User> findByUsernameLikeIgnoreCaseAndRolesIn(String nameFilter, List<Role> roles, Pageable pageable);
 }

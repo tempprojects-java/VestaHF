@@ -2,10 +2,11 @@ package com.gmail.gak.artem.ui.view.apanel.user;
 
 import com.gmail.gak.artem.backend.data.entity.Role;
 import com.gmail.gak.artem.backend.data.entity.User;
-import com.gmail.gak.artem.ui.component.SearchBox;
+import com.gmail.gak.artem.ui.component.SearchField;
 import com.gmail.gak.artem.ui.component.ToolbarLayout;
 import com.gmail.gak.artem.ui.view.apanel.AdminPanelView;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridMultiSelectionModel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -22,7 +23,8 @@ import static com.gmail.gak.artem.app.StaticValue.PATH_USER;
 public class UserView extends VerticalLayout {
 
     private Grid<User> grid;
-    private SearchBox searchBox;
+    private ComboBox<Role> comboBox;
+    private SearchField searchField;
     private Button addBtn;
     private Button deleteBtn;
 
@@ -38,19 +40,25 @@ public class UserView extends VerticalLayout {
     }
 
     private void addToolbar() {
-        addBtn = new Button("Create", event -> {});
+        comboBox = new ComboBox<>();
+        comboBox.setItemLabelGenerator(Role::getName);
+        comboBox.setPlaceholder("Все");
+        comboBox.addValueChangeListener(event -> presenter.filterChanged(event));
+
+        addBtn = new Button("Создать", event -> presenter.create());
         addBtn.getElement().setAttribute("theme", "primary");
 
-        deleteBtn = new Button("Delete", event -> {});
+        deleteBtn = new Button("Удалить", event -> presenter.delete());
         deleteBtn.setEnabled(false);
         deleteBtn.getElement().setAttribute("theme", "error");
 
-        searchBox = new SearchBox();
-        searchBox.setPlaceholder("Find Name");
+        searchField = new SearchField();
+        searchField.setPlaceholder("Найти по имени");
+        searchField.addValueChangeListener(event -> presenter.filterChanged(event));
 
         ToolbarLayout toolbarLayout = new ToolbarLayout();
         toolbarLayout.add(ToolbarLayout.SIDE.LEFT, addBtn, deleteBtn);
-        toolbarLayout.add(ToolbarLayout.SIDE.RIGHT, searchBox);
+        toolbarLayout.add(ToolbarLayout.SIDE.RIGHT, comboBox, searchField);
 
         add(toolbarLayout);
     }
@@ -68,10 +76,10 @@ public class UserView extends VerticalLayout {
                 .setFlexGrow(0).setWidth("80px");
         grid.addColumn(User::getEmail)
                 .setHeader("E-mail")
-                .setSortable(true).setSortProperty("name");
+                .setSortable(true).setSortProperty("email");
         grid.addColumn(User::getUsername)
                 .setHeader("Username")
-                .setSortable(true).setSortProperty("surname");
+                .setSortable(true).setSortProperty("username");
         grid.addColumn(user -> {
             if(user.getRoles() == null) {
                 return "- no role -";
@@ -91,5 +99,9 @@ public class UserView extends VerticalLayout {
 
     public Grid<User> getGrid() {
         return grid;
+    }
+
+    public ComboBox<Role> getComboBox() {
+        return comboBox;
     }
 }

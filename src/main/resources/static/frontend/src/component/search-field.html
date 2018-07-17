@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/vaadin-text-field/vaadin-text-field.html">
+
+<dom-module id="search-field">
+    <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+            #close-btn {
+                cursor: default;
+            }
+            vaadin-text-field {
+                width: 100%;
+            }
+        </style>
+        <vaadin-text-field placeholder="Search" id="text-field">
+            <iron-icon icon="lumo:search" slot="prefix"></iron-icon>
+            <div id="close-btn" slot="suffix" on-click="clean"><iron-icon icon="lumo:cross"></iron-icon></div>
+        </vaadin-text-field>
+    </template>
+
+    <script>
+        class SearchField extends Polymer.Element {
+            static get is() {
+                return 'search-field'
+            }
+        }
+        customElements.define(SearchField.is, SearchField);
+    </script>
+</dom-module>

@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserService implements CrudService<User> {
 
@@ -41,15 +44,14 @@ public class UserService implements CrudService<User> {
         }
 
         if(name == null) {
-//            return userRepository.findByRolesIn(new ArrayList<Role>(role), pageable);
+            return userRepository.findByRolesIn(getRolesArrayList(role), pageable);
         }
 
-        String nameFilter = "%" + name + "%";
         if(role == null) {
-            return userRepository.findByUsernameLikeIgnoreCase(nameFilter, pageable);
+            return userRepository.findByUsernameLikeIgnoreCase(getSearchPattern(name), pageable);
         }
 
-        return userRepository.findByUsernameLikeIgnoreCaseAndRoles(nameFilter, role, pageable);
+        return userRepository.findByUsernameLikeIgnoreCaseAndRolesIn(getSearchPattern(name), getRolesArrayList(role), pageable);
     }
 
     public int countAnyMatching(String name, Role role) {
@@ -58,14 +60,28 @@ public class UserService implements CrudService<User> {
         }
 
         if(name == null) {
-            return userRepository.countByRoles(role);
+            return userRepository.countByRolesIn(getRolesArrayList(role));
         }
 
-        String nameFilter = "%" + name + "%";
         if(role == null) {
-            return userRepository.countByUsernameLikeIgnoreCase(nameFilter);
+            return userRepository.countByUsernameLikeIgnoreCase(getSearchPattern(name));
         }
 
-        return userRepository.countByUsernameLikeIgnoreCaseAndRoles(nameFilter, role);
+        return userRepository.countByUsernameLikeIgnoreCaseAndRolesIn(getSearchPattern(name), getRolesArrayList(role));
+    }
+
+    public Page<User> findByRolesIn(List<Role> roles, Pageable pageable) {
+        return userRepository.findByRolesIn(roles, pageable);
+    }
+
+    private List<Role> getRolesArrayList(Role role) {
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+
+        return roles;
+    }
+
+    private String getSearchPattern(String str) {
+        return "%" + str + "%";
     }
 }

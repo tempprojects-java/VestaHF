@@ -1,9 +1,9 @@
 package com.gmail.gak.artem.ui.dataprovider;
 
 import com.gmail.gak.artem.app.StaticValue;
-import com.gmail.gak.artem.backend.data.entity.User;
-import com.gmail.gak.artem.backend.service.UserService;
-import com.gmail.gak.artem.ui.data.UserFilter;
+import com.gmail.gak.artem.backend.data.entity.Role;
+import com.gmail.gak.artem.backend.service.RoleService;
+import com.gmail.gak.artem.ui.data.RoleFilter;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
@@ -16,19 +16,17 @@ import org.springframework.data.domain.Sort;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class UserDataProvider extends FilterablePageableDataProvider<User, UserFilter> {
-    private final UserService userService;
+public class RoleDataProvider extends FilterablePageableDataProvider<Role, RoleFilter> {
+    private final RoleService RoleService;
 
     private List<QuerySortOrder> defaultSortOrders;
-    private Consumer<Page<User>> pageObserver;
 
-    public UserDataProvider(UserService userService) {
-        this.userService = userService;
-        setSortOrders(StaticValue.DEFAULT_SORT_DIRECTION, StaticValue.USER_SORT_FIELDS);
+    public RoleDataProvider(RoleService RoleService) {
+        this.RoleService = RoleService;
+        setSortOrders(StaticValue.DEFAULT_SORT_DIRECTION, StaticValue.ROLE_SORT_FIELDS);
     }
 
     private void setSortOrders(Sort.Direction direction, String[] properties) {
@@ -49,27 +47,24 @@ public class UserDataProvider extends FilterablePageableDataProvider<User, UserF
     }
 
     @Override
-    protected Page<User> fetchFromBackEnd(Query<User, UserFilter> query, Pageable pageable) {
-        UserFilter filter = query.getFilter().orElse(null);
+    protected Page<Role> fetchFromBackEnd(Query<Role, RoleFilter> query, Pageable pageable) {
+        RoleFilter filter = query.getFilter().orElse(null);
         if(filter == null) {
-            return userService.find(pageable);
+            return RoleService.find(pageable);
         }
 
-        Page<User> page = userService.findAnyMatching(filter.getName(), filter.getRole(), pageable);
-        if (pageObserver != null) {
-            pageObserver.accept(page);
-        }
+        Page<Role> page = RoleService.findAnyMatching(filter.getName(), pageable);
         return page;
     }
 
     @Override
-    protected int sizeInBackEnd(Query<User, UserFilter> query) {
-        UserFilter filter = query.getFilter().orElse(null);
+    protected int sizeInBackEnd(Query<Role, RoleFilter> query) {
+        RoleFilter filter = query.getFilter().orElse(null);
 
         if(filter == null){
-            return userService.count();
+            return RoleService.count();
         }
 
-        return userService.countAnyMatching(filter.getName(), filter.getRole());
+        return RoleService.countAnyMatching(filter.getName());
     }
 }

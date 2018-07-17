@@ -54,7 +54,7 @@ public class DataGenerator {
     private void createUsers() {
         Role role = roleService.findByName("user");
 
-        for(int i = 1; i < 201; ++i) {
+        for(int i = 1; i < 21; ++i) {
             User user = new User();
             user.setUsername("User_" + i);
             user.setEmail("user" + i + "@mail.com");

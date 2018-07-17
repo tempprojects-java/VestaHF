@@ -1,55 +1,39 @@
 package com.gmail.gak.artem.ui.component;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.templatemodel.TemplateModel;
 
-public class ToolbarLayout extends HorizontalLayout {
-    HorizontalLayout leftSide;
-    HorizontalLayout rightSide;
+@Tag("toolbar-layout")
+@HtmlImport("src/component/toolbar-layout.html")
+public class ToolbarLayout extends PolymerTemplate<TemplateModel> implements HasSize {
 
     public enum SIDE {
         LEFT, RIGHT
     }
 
+    @Id("left")
+    private Div left;
+
+    @Id("right")
+    private Div right;
+
     public ToolbarLayout() {
-        setSpacing(false);
-        setPadding(false);
         setWidth("100%");
-        leftSide = new HorizontalLayout();
-        rightSide = new HorizontalLayout();
-        rightSide.setAlignItems(FlexComponent.Alignment.BASELINE);
-
-        add(init(leftSide),init(rightSide, true));
-    }
-
-    private Component init(HorizontalLayout component) {
-        return init(component, false);
-    }
-
-    private Component init(HorizontalLayout component, boolean rightAlign) {
-        Div wrapper = new Div(component);
-
-        VerticalLayout container = new VerticalLayout(wrapper);
-        container.setSpacing(false);
-        container.setPadding(false);
-        container.setWidth("50%");
-        if(rightAlign) {
-            container.setAlignItems(Alignment.END);
-        }
-
-        return container;
     }
 
     public void add(SIDE side, Component... components) {
         if(SIDE.LEFT.equals(side)) {
-            leftSide.add(components);
+            left.add(components);
         }
 
         if(SIDE.RIGHT.equals(side)) {
-            rightSide.add(components);
+            right.add(components);
         }
     }
 }

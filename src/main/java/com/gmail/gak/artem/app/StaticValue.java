@@ -19,13 +19,14 @@ public class StaticValue {
     public static final String ICON_LEDGER = "account-box";
 
     public static final String TITLE_ADMIN_APANEL = "Панель управления";
-    public static final String TITLE_LOGIN = "Воход";
+    public static final String TITLE_LOGIN = "Вход";
     public static final String TITLE_USER = "Пользователи";
     public static final String TITLE_USER_PROFILE = "Мой аккаунт";
     public static final String TITLE_LEDGER = "Книги";
 
     public static final Sort.Direction DEFAULT_SORT_DIRECTION = Sort.Direction.ASC;
-    public static final String[] USER_SORT_FIELDS = {"id", "username", "email"};
+    public static final String[] USER_SORT_FIELDS = {"id", "email", "username"};
+    public static final String[] ROLE_SORT_FIELDS = {"id", "name"};
 
     public static final String VIEWPORT = "width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes";
 }
