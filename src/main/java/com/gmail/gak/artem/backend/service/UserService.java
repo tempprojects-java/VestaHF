@@ -84,4 +84,8 @@ public class UserService implements CrudService<User> {
     private String getSearchPattern(String str) {
         return "%" + str + "%";
     }
+
+    public User find(Long id) {
+        return userRepository.findById(id);
+    }
 }
